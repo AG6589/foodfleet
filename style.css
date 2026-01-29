@@ -1,0 +1,320 @@
+ /* --- Global Setup & Variables --- */
+ :root {
+    --primary-color: #E74C3C;
+    --secondary-color: #2C3E50;
+    --header-bg: #131921; /* Dark header background */
+    --bg-color: #F7F9F9;
+    --text-dark: #2C3E50;
+    --text-light: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.09);
+}
+
+/* --- Keyframe Animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(70%); }
+    to { opacity: 1; transform: translateY(70%); }
+}
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(70%); }
+    to { opacity: 1; transform: translateY(70%); }
+}
+
+/* --- Basic Reset & Font --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+}
+.container { width: 90%; max-width: 1200px; margin: auto; }
+h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; }
+a { text-decoration: none; }
+
+/* --- Header & Navigation --- */
+header {
+    background-color: var(--header-bg);
+    padding: 0.75rem 2%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.all-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: border-color 0.2s;
+}
+.all-menu-btn:hover { border-color: var(--text-light); }
+.all-menu-btn .hamburger-icon { font-size: 1.5rem; line-height: 1; }
+.all-menu-btn .all-text { font-weight: 700; font-size: 1rem; }
+
+.logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-color); }
+
+/* NEW: Location Selector Styles */
+.location-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-light);
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.location-selector:hover { border-color: var(--text-light); }
+.location-selector svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+.location-text { font-size: 0.9rem; }
+.location-text strong { display: block; font-weight: 700; }
+
+.header-main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+}
+
+.search-bar { display: flex; flex-grow: 1; max-width: 600px; border-radius: 6px; overflow: hidden; }
+.search-bar input { border: none; padding: 10px 15px; font-size: 1rem; outline: none; width: 100%; }
+.search-bar button { border: none; background-color: var(--primary-color); color: white; padding: 0 15px; cursor: pointer; transition: background-color 0.3s; }
+.search-bar button:hover { background-color: #C0392B; }
+
+.cart-icon { color: var(--text-light); position: relative; }
+.cart-icon svg { width: 32px; height: 32px; fill: currentColor; transition: color 0.3s; }
+.cart-icon:hover { color: var(--primary-color); }
+
+/* --- Sidebar Menu --- */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -350px;
+    width: 350px;
+    height: 100%;
+    background-color: var(--card-bg);
+    z-index: 2000;
+    transition: left 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar.open { left: 0; }
+.sidebar-header {
+    background-color: var(--header-bg);
+    color: var(--text-light);
+    padding: 1rem 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.close-btn { background: none; border: none; color: var(--text-light); font-size: 2rem; cursor: pointer; }
+.sidebar-content { padding: 1rem 0; overflow-y: auto; }
+.sidebar-content h3 { padding: 0.5rem 1.5rem; font-size: 1.1rem; font-weight: 700; }
+.sidebar-content ul { list-style: none; }
+.sidebar-content ul li a { display: block; padding: 0.75rem 1.5rem; color: var(--secondary-color); transition: background-color 0.2s; }
+.sidebar-content ul li a:hover { background-color: #e9ecef; }
+.sidebar-divider { height: 1px; background-color: #dee2e6; margin: 1rem 0; }
+
+#overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); z-index: 1500; display: none;
+}
+#overlay.show { display: block; }
+
+/* --- NEW: Keyframe for Scroll Animation --- */
+@keyframes scroll-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(50px); /* Start 40px lower */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Move to original position */
+    }
+}
+
+/* --- Hero Section --- */
+.hero {
+    text-align: center; padding: 6rem 1rem;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+    color: var(--text-light);
+}
+.hero h1 { font-size: 3.5rem; margin-bottom: 1rem; animation: slideInUp 0.8s ease-out; }
+.hero p {
+    font-size: 1.2rem; margin-bottom: 2.5rem; max-width: 600px;
+    margin-left: auto; margin-right: auto; animation: slideInUp 0.8s ease-out 0.2s;
+    animation-fill-mode: backwards;
+}
+.cta-button {
+    display: inline-block; background-color: var(--primary-color); color: var(--text-light);
+    padding: 16px 32px; font-size: 1.1rem; font-weight: bold; text-decoration: none;
+    border-radius: 50px; transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: slideInUp 0.8s ease-out 0.4s; animation-fill-mode: backwards;
+}
+.cta-button:hover { background-color: #C0392B; transform: translateY(-5px); }
+
+/* --- Menu Section --- */
+.menu-section { padding: 4rem 0; }
+.menu-section h2 { text-align: center; font-size: 2.8rem; margin-bottom: 3.5rem; }
+.menu-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+}
+.food-card {
+    background-color: var(--card-bg); border-radius: 12px; overflow: hidden;
+    box-shadow: var(--shadow); transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex; flex-direction: column; animation: fadeIn 0.6s ease-out;
+    animation-fill-mode: backwards;
+    cursor: pointer;
+}
+.food-card:nth-child(2) { animation-delay: 0.3s; }
+.food-card:nth-child(3) { animation-delay: 0.5s; }
+.food-card:nth-child(4) { animation-delay: 0.4s; }
+.food-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12); }
+.food-card img { width: 100%; height: 220px; object-fit: cover; }
+.card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+.card-content h3 { font-size: 1.6rem; margin-bottom: 0.5rem; }
+.card-content p { color: #566573; flex-grow: 1; margin-bottom: 1rem; }
+.card-footer { margin-top: auto; }
+.price { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+
+/* --- NEW: Special Offers Section --- */
+.offer-section { padding: 4rem 0; }
+.offer-section h2 { text-align: center; font-size: 2.5rem; margin-bottom: 2.5rem; }
+.offer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+.offer-card {
+    background-color: var(--primary-color); color: var(--text-light);
+    padding: 1.5rem; border-radius: 12px; text-align: center;
+}
+.offer-card:hover{
+    cursor: pointer;
+}
+.offer-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.offer-card p { opacity: 0.9; margin-bottom: 1.5rem; }
+.coupon-code {
+    background-color: var(--text-light); color: var(--primary-color);
+    padding: 8px 16px; border-radius: 6px; font-weight: bold;
+    display: inline-block; cursor: pointer;
+}
+
+/* --- NEW: Special Offers Section --- */
+.offer-section { padding: 4rem 0; }
+.offer-section h2 { text-align: center; font-size: 2.5rem; margin-bottom: 2.5rem; }
+.offer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+.offer-card {
+    background-color: var(--primary-color); color: var(--text-light);
+    padding: 1.5rem; border-radius: 12px; text-align: center;
+}
+.offer-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.offer-card p { opacity: 0.9; margin-bottom: 1.5rem; }
+.coupon-code {
+    background-color: var(--text-light); color: var(--primary-color);
+    padding: 8px 16px; border-radius: 6px; font-weight: bold;
+    display: inline-block; cursor: pointer;
+}
+
+        /* --- Footer Section Styling --- */
+.site-footer {
+            background-color: #2C3E50; /* Dark slate blue */
+            color: #FFFFFF;
+            padding: 4rem 2rem 2rem 2rem;
+            margin-top: 4rem;
+}
+
+.footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+}
+
+.footer-grid {
+            display: grid;
+            /* Creates responsive columns */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+}
+
+.footer-column h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #FFFFFF;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+}
+
+.footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+}
+
+.footer-column ul li a {
+            color: #BDC3C7; /* Muted light grey for links */
+            text-decoration: none;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #FFFFFF; /* Brighter white on hover */
+    padding-left: 5px;
+}
+
+.social-links-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+        
+.social-links {
+    display: inline-flex; /* Changed to inline-flex to center the container */
+    gap: 1.5rem;
+}
+
+.social-links a {
+    color: #BDC3C7;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #E74C3C; /* A primary accent color */
+    transform: translateY(-3px);
+}
+
+.social-links svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #485b6e; /* A subtle separator line */
+    padding-top: 2rem;
+    color: #BDC3C7;
+    font-size: 0.9rem;
+}
